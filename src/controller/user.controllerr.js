@@ -24,7 +24,7 @@ const signup = async(req , res) => {
             password:hash
         })
 
-        return res.status(200).
+        return res.status(201).
         json({message : "User Registered successfully"})
 
     } catch (error) {
@@ -39,23 +39,25 @@ const login = async(req , res ) => {
         const user = await User.findOne({email})
 
         if(!user){
-            res.status(403).json({
+            return res.status(403).json({
                 message:"user nor found"
             })
         }
 
         const ismatch = await bcrypt.compare(password,user.password)
         if(!ismatch){
-            console.log("user password is incorrect ")
-        }
+        return res.status(401).json({
+            message: "invalid credentials"
+        })
+}
 
         const token = jwt.sign({
             id : user._id,
             role : user.role},
             process.env.JWT_SECRET,
-            {expiresIn : "10min"}
+            {expiresIn : "1d"}
         )
-        res.status(200).json({
+        res.status(201).json({
             success : true,
             message : "user logedIn sucessfully",
             token : token
