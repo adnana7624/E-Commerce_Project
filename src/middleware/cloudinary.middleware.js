@@ -13,7 +13,7 @@ cloudinary.config({
 const uplaodOnCloudinary = async(localpath) => {
     try {
         const imageuplaod = await cloudinary.uploader.upload(localpath)
-        //fs.unlinkSync(localpath)
+        fs.unlinkSync(localpath)
         return imageuplaod.secure_url;;
     } catch (error) {
         fs.unlinkSync(localpath)
