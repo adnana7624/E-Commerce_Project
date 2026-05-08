@@ -22,3 +22,4 @@ const uplaodOnCloudinary = async(localpath) => {
 }
 
 export {uplaodOnCloudinary}
+

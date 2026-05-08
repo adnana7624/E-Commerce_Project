@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user",router)
 
+
 app.get("/",(req , res) =>{
     res.send("app is runing sucesfuly")
 })
