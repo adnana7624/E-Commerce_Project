@@ -7,13 +7,15 @@ import {
     createProduct ,
     getProduct, 
     updateProduct, 
-    deleteProduct,
-    addToCart,
-    removeItemFromCart,
-    updateQuantity,
-    getcart
+    deleteProduct    
 } from "../controller/product.controller.js";
 
+import {addToCart,
+    removeItemFromCart,
+    updateQuantity,
+    getcart} from "../controller/cart.controller.js";
+
+import { placeOrder } from "../controller/order.controller.js";
 
 const router = express.Router();
 
@@ -45,5 +47,7 @@ router.post("/add",verifyjwt,isadmin,addToCart)
 router.get("/getcart",verifyjwt,isadmin,getcart)
 router.put("/updatequantity",verifyjwt,isadmin,updateQuantity)
 router.delete("/deleteitem",verifyjwt,isadmin,removeItemFromCart)
+
+router.post("/placeorder",verifyjwt,placeOrder)
 
 export {router};
