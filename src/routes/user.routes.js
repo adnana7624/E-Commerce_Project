@@ -43,10 +43,10 @@ router.post("/update/:id",verifyjwt,isadmin,upload.single("productImage"),update
 
 router.delete("/delete/:id",verifyjwt,isadmin,deleteProduct)
 
-router.post("/add",verifyjwt,isadmin,addToCart)
-router.get("/getcart",verifyjwt,isadmin,getcart)
-router.put("/updatequantity",verifyjwt,isadmin,updateQuantity)
-router.delete("/deleteitem",verifyjwt,isadmin,removeItemFromCart)
+router.post("/add",verifyjwt,addToCart)
+router.get("/getcart",verifyjwt,getcart)
+router.put("/updatequantity",verifyjwt,updateQuantity)
+router.delete("/deleteitem",verifyjwt,removeItemFromCart)
 
 router.post("/placeorder",verifyjwt,placeOrder)
 

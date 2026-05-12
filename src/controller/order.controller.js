@@ -13,6 +13,10 @@ const placeOrder = async(req,res)=>{
             return res.status(400).json({message:"cart is empty"})
         }
         
+        cart.items = cart.items.filter(item => item.product);
+
+        await cart.save();
+        
         // claculate amount 
         let total=0;
         cart.items.forEach(item =>{
@@ -21,6 +25,14 @@ const placeOrder = async(req,res)=>{
             }
         });
        
+        // for (let item of cart.items) {
+        // if (!item.product) {
+        //     return res.status(400).json({
+        //         message: "Some products in cart no longer exist"
+        //         });
+        //     }
+        // }
+
         // create order
         const order = await Order.create({
             user : userId,
@@ -44,7 +56,10 @@ const placeOrder = async(req,res)=>{
         cart.items = [];
         await cart.save();
 
-        return res.status(200).json({message : "order create succesfull"})
+        return res.status(200).json({
+            message : "order create succesfull",
+        order
+    })
 
 
     } catch (error) {

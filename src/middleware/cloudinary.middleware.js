@@ -1,7 +1,7 @@
 import {v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 import fs from "fs";
-import { setUncaughtExceptionCaptureCallback } from "process";
+
 
 dotenv.config();
 cloudinary.config({
