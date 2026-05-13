@@ -15,7 +15,7 @@ import {addToCart,
     updateQuantity,
     getcart} from "../controller/cart.controller.js";
 
-import { placeOrder } from "../controller/order.controller.js";
+import { placeOrder , getOrder , updateOrderStatus} from "../controller/order.controller.js";
 
 const router = express.Router();
 
@@ -49,5 +49,9 @@ router.put("/updatequantity",verifyjwt,updateQuantity)
 router.delete("/deleteitem",verifyjwt,removeItemFromCart)
 
 router.post("/placeorder",verifyjwt,placeOrder)
+router.get("/getorder",getOrder)
+
+router.put("/updatestatus/:id",verifyjwt,updateOrderStatus)
+
 
 export {router};

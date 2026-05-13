@@ -1,5 +1,6 @@
 import { uplaodOnCloudinary } from "../middleware/cloudinary.middleware.js";
 import {Cart} from "../moddle/cart.model.js";
+import { Product } from "../moddle/product.modle.js";
 
 
 const addToCart = async(req , res) => {
@@ -9,6 +10,12 @@ const addToCart = async(req , res) => {
 
         let cart = await Cart.findOne({user : userId})
 
+        const product = await Product.findById(productId);
+        if(!product){
+            return res.status(404).json({
+                message : "product not found"
+            })
+        }
         //check cart if not exist crreate
         
         if(!cart){
@@ -22,6 +29,24 @@ const addToCart = async(req , res) => {
             const index = cart.items.findIndex(
                 item => item.product.toString() === productId
             );
+
+        // check product if out of stock
+        
+        if(product.stock <= 0  ){
+            return res.status(400).json({
+                success : false,
+                message : `${product.name} is out of stock`
+                })
+            }
+
+        // check for less number of item than quantity
+        
+        if(quantity > product.stock){
+            return res.status(400).json({
+                success : false,
+                message : `${product.name} stock is only = ${product.stock}  availible`
+            })
+        }
         console.log("index:", index);
 
         if(index > -1){

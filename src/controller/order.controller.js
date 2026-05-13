@@ -24,14 +24,17 @@ const placeOrder = async(req,res)=>{
                 total += item.product.price*item.quantity;
             }
         });
-       
-        // for (let item of cart.items) {
-        // if (!item.product) {
-        //     return res.status(400).json({
-        //         message: "Some products in cart no longer exist"
-        //         });
-        //     }
-        // }
+        
+
+        // validate stock 
+        for(let item of cart.items){
+            // skip if ivalid product foiind
+
+            if(!item.product) continue;
+
+            
+        }
+
 
         // create order
         const order = await Order.create({
@@ -56,10 +59,13 @@ const placeOrder = async(req,res)=>{
         cart.items = [];
         await cart.save();
 
+        await order.populate("items.product")
+
         return res.status(200).json({
-            message : "order create succesfull",
-        order
-    })
+            success : true,
+            message : "order create successfull",
+            order
+        })
 
 
     } catch (error) {
@@ -67,4 +73,44 @@ const placeOrder = async(req,res)=>{
     }
 }
 
-export {placeOrder};
+
+const getOrder = async(req,res) =>{
+    try {
+        const order = await Order.find();
+
+        return res.status(200).json({order })
+        
+    } catch (error) {
+        return res.status(500).json({
+            succes : false,
+            message : error.message
+        })
+    }
+}
+
+const updateOrderStatus = async(req,res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        // check order hai or not
+
+        const order = await Order.findById(id);
+        if(!order){
+            return res.status(404).json({message : "there have no order to update its status"})
+        }
+
+        order.status = status;
+        await order.save();
+
+        return res.status(200).json({
+            succes : true,
+            message : "order status updated",
+            order
+        })
+
+    } catch (error) {
+        res.status(500).json({message : error.message})
+    }
+}
+export {placeOrder , getOrder , updateOrderStatus};
